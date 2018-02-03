@@ -6,6 +6,7 @@ import java.util.stream.IntStream;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,15 +46,26 @@ public class DemoController {
 	}
 
 	@PostMapping(path = "manyParams")
-	public String sayTheTimeManyParamsPost(Params params) {
-		return IntStream.rangeClosed(1, params.getRep())
+	public String sayTheTimeManyParamsPost(@RequestBody Params params) {
+		String str = IntStream.rangeClosed(1, params.getRep())
 				.mapToObj(i -> i + ". Hello " + params.getName() + "! Now it is " + LocalDateTime.now())
 				.collect(Collectors.joining("\n"));
+
+		return str;
 	}
 
 	static class Params {
 		String name;
 		int rep;
+
+		public Params(String name, int rep) {
+			super();
+			this.name = name;
+			this.rep = rep;
+		}
+
+		public Params() {
+		}
 
 		public String getName() {
 			return name;
