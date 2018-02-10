@@ -15,9 +15,9 @@ public class CompanyController {
 
 	@GetMapping("/")
 	public Resource<String> getServiceDocument() {
-		return new Resource<String>("Depts", BasicLinkBuilder.linkToCurrentMapping().withSelfRel(),
+		return new Resource<String>("Company", BasicLinkBuilder.linkToCurrentMapping().withSelfRel(),
 				BasicLinkBuilder.linkToCurrentMapping().slash("departments").withRel("departments"),
-				linkTo(methodOn(DepartmentController.class).addADepartment(null)).withRel("departments2"));
+				linkTo(methodOn(DepartmentsController.class).addADepartment(null)).withRel("departments2"));
 	}
 
 }
