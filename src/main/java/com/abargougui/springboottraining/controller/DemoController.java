@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DemoController {
 
-	@RequestMapping
+	@RequestMapping(path = "default")
 	public LocalDateTime sayTheTime() {
 		return LocalDateTime.now();
 	}

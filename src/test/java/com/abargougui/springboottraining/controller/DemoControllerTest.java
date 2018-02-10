@@ -28,10 +28,10 @@ public class DemoControllerTest {
 
 	@Test
 	public void sayTheTime() throws Exception {
-		String result1 = mvc.perform(get("/")).andExpect(status().is2xxSuccessful()).andReturn().getResponse()
+		String result1 = mvc.perform(get("/default")).andExpect(status().is2xxSuccessful()).andReturn().getResponse()
 				.getContentAsString();
 
-		String result2 = mvc.perform(get("/")).andExpect(status().is2xxSuccessful()).andReturn().getResponse()
+		String result2 = mvc.perform(get("/default")).andExpect(status().is2xxSuccessful()).andReturn().getResponse()
 				.getContentAsString();
 		assertNotEquals(result1, result2);
 	}
