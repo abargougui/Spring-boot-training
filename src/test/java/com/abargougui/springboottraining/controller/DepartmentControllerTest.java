@@ -83,6 +83,24 @@ public class DepartmentControllerTest {
 	}
 
 	@Test
+	public void updateDepartmentConflict() throws JsonProcessingException, Exception {
+
+		Department input = new Department("Sale");
+		String location = addDepartment(input);
+
+		Resource<Department> output = getDepartment(location);
+
+		mvc.perform(post(output.getId().getHref()).contentType(MediaType.APPLICATION_JSON_UTF8)
+				.content(mapper.writeValueAsString(output.getContent().withName("Billing"))))
+				.andExpect(status().isOk());
+
+		mvc.perform(post(output.getId().getHref()).contentType(MediaType.APPLICATION_JSON_UTF8)
+				.content(mapper.writeValueAsString(output.getContent().withName("HR"))))
+				.andExpect(status().isConflict());
+
+	}
+
+	@Test
 	public void deleteADepartment() throws Exception {
 		Department input = new Department("Billing");
 		String location = addDepartment(input);
