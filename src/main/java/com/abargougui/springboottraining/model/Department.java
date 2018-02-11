@@ -2,16 +2,31 @@ package com.abargougui.springboottraining.model;
 
 import java.util.UUID;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Version;
+
+import org.hibernate.annotations.GenericGenerator;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@Entity
 public class Department {
 
-	private final String name;
-	private final UUID uuid;
+	private String name;
 
-	public String getName() {
-		return name;
+	@Id
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+	private UUID uuid;
+
+	@Version
+	private int version;
+
+	public Department() {
+		super();
 	}
 
 	public Department(String name) {
@@ -27,10 +42,6 @@ public class Department {
 		this.uuid = uuid;
 	}
 
-	public UUID getUuid() {
-		return uuid;
-	}
-
 	public Department withUuid(UUID uuid) {
 		return new Department(name, uuid);
 	}
@@ -38,4 +49,29 @@ public class Department {
 	public Department withName(String name) {
 		return new Department(name, uuid);
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public UUID getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(UUID uuid) {
+		this.uuid = uuid;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
+	}
+
 }

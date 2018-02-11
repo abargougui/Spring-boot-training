@@ -1,47 +1,41 @@
 package com.abargougui.springboottraining.service;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.abargougui.springboottraining.dao.DepartmentDao;
 import com.abargougui.springboottraining.model.Department;
 
 @Service
 public class DepartmentService {
 
-	Map<UUID, Department> db = new HashMap<UUID, Department>();
+	@Autowired
+	DepartmentDao dao;
 
 	public UUID addDepartment(Department department) {
-		UUID uuid = UUID.randomUUID();
-		db.put(uuid, department.withUuid(uuid));
-		return uuid;
+		return dao.save(department).getUuid();
 	}
 
 	public Department find(UUID id) {
-		if (db.containsKey(id))
-			return db.get(id);
-		throw new NoSuchElementException();
+		return Optional.ofNullable(dao.findOne(id)).orElseThrow(() -> new NoSuchElementException());
 	}
 
-	public Collection<Department> findAll() {
-		return db.values();
+	public Iterable<Department> findAll() {
+		return dao.findAll();
 	}
 
 	public Department update(Department department) {
-		if (!db.containsKey(department.getUuid()))
-			throw new NoSuchElementException();
-		db.put(department.getUuid(), department);
-		return department;
+		find(department.getUuid());
+		return dao.save(department);
 	}
 
 	public void delete(UUID id) {
-		if (!db.containsKey(id))
-			throw new NoSuchElementException();
-		db.remove(id);
+		dao.findOne(id);
+		dao.delete(id);
 	}
 
 }
